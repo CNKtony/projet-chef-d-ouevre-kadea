@@ -1,0 +1,201 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+/* Calendar Container */
+.calendar-container {
+  width: 95%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Header */
+header {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+#logout-button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#logout-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Calendar */
+.calendar {
+  padding: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#current-month {
+  font-size: 1.5em;
+  color: #333;
+}
+
+button {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #333;
+  cursor: pointer;
+}
+
+button:hover {
+  color: #4caf50;
+}
+
+/* Days Grid */
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day-header {
+  font-weight: bold;
+  text-align: center;
+  color: #4caf50;
+}
+
+#calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  place-items: center;
+}
+
+.day {
+  position: relative;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  height: 50px;
+  width: 50px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.day:hover {
+  background-color: #4caf50;
+  color: white;
+}
+
+.day .date {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.weather-info {
+  font-size: 8px;
+  text-align: center;
+}
+img {
+  font-size: 2px;
+  text-align: center;
+}
+.weather-info span {
+  display: block;
+}
+
+.task-count {
+  font-size: 0.8em;
+  color: #f44336;
+  text-align: center;
+  margin-top: 5px;
+}
+.current-day {
+  background-color: #ffeb3b; /* Couleur jaune pour le jour actuel */
+  border: 2px solid #ffc107; /* Bordure jaune foncé */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  .calendar-container {
+    width: 100vw;
+    height: 625px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  .calendar-days {
+    font-size: 12px;
+  }
+  .day-header {
+    padding-right: 5px;
+  }
+  .day .date {
+    font-size: 10px;
+  }
+
+  .weather-info {
+    font-size: 8px;
+  }
+
+  .task-count {
+    font-size: 0.6em;
+  }
+  #logout-button {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+  }
+  .day {
+    height: 25px;
+    width: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  #calendar-grid {
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    margin-top: 10px;
+    margin-right: 8px;
+  }
+}

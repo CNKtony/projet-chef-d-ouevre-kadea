@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendrier</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="calendar-container">
+      <header>
+        <h1>Calendrier</h1>
+        <form action="/auth/logout" method="POST">
+          <button type="submit" id="logout-button">Déconnexion</button>
+        </form>
+      </header>
+
+      <div class="calendar">
+        <div class="calendar-header">
+          <button id="prev-month">◀</button>
+          <h2 id="current-month">Mois Année</h2>
+          <button id="next-month">▶</button>
+        </div>
+
+        <div class="calendar-days">
+          <div class="day-header">Lundi</div>
+          <div class="day-header">Mardi</div>
+          <div class="day-header">Mercedi</div>
+          <div class="day-header">Jeudi</div>
+          <div class="day-header">Vendredi</div>
+          <div class="day-header">Samedi</div>
+          <div class="day-header">Dimanche</div>
+        </div>
+        <div id="calendar-grid"></div>
+      </div>
+    </div>
+
+    <script>
+                const tasks = {}; // Utilisez les données récupérées côté serveur pour les tâches ici
+                           const weather = <%- JSON.stringify(forecastData) %>; // Données météo injectées depuis le contrôleur
+
+                           document.addEventListener("DOMContentLoaded", () => {
+                             // JavaScript pour gérer le calendrier
+                           });
+                           document.addEventListener("DOMContentLoaded", () => {
+                       const calendarGrid = document.getElementById("calendar-grid");
+                       const currentMonthDisplay = document.getElementById("current-month");
+                       const prevMonthButton = document.getElementById("prev-month");
+                       const nextMonthButton = document.getElementById("next-month");
+
+                       let currentDate = new Date();
+
+                       function renderCalendar(date) {
+            calendarGrid.innerHTML = "";
+
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const startDay = startOfMonth.getDay() || 7;
+
+            currentMonthDisplay.textContent = date.toLocaleDateString("fr-FR", {
+              month: "long",
+              year: "numeric",
+            });
+
+            const today = new Date(); // Obtenir la date actuelle
+
+            // Ajouter des jours vides au début
+            for (let i = 1; i < startDay; i++) {
+              const blankDay = document.createElement("div");
+              calendarGrid.appendChild(blankDay);
+            }
+
+            // Afficher chaque jour
+            for (let day = 1; day <= endOfMonth.getDate(); day++) {
+              const dayElement = document.createElement("div");
+              dayElement.classList.add("day");
+              dayElement.innerHTML = `<div class="date">${day}</div>`;
+
+              // Vérifier si c'est le jour actuel
+              if (
+                today.getDate() === day &&
+                today.getMonth() === date.getMonth() &&
+                today.getFullYear() === date.getFullYear()
+              ) {
+                dayElement.classList.add("current-day"); // Ajouter la classe spéciale
+              }
+
+              calendarGrid.appendChild(dayElement);
+
+
+                           // Add weather info
+                           const weatherInfo = weather.find((w) =>
+                             new Date(w.dt_txt).getDate() === day &&
+                             new Date(w.dt_txt).getMonth() === date.getMonth()
+                           );
+
+                           if (weatherInfo) {
+          // Récupération de la description de la météo
+          const weatherDescription = weatherInfo.weather[0].description.toLowerCase();
+          let weatherImage = '';
+          let impactMessage = '';
+
+          // Condition pour afficher différentes images et messages basés sur les seuils
+          if (weatherDescription.includes('ensoleillé') || weatherDescription.includes('clair')) {
+              weatherImage = '<img src="images/sunny.png" alt="Ensoleillé">';
+              impactMessage = 'Temps agréable, les activités en extérieur sont favorisées.';
+          } else if (weatherDescription.includes('nuageux') || weatherDescription.includes('couvert')) {
+              weatherImage = '<img src="images/cloudy.png" alt="Nuageux">';
+              impactMessage = 'Temps calme, idéal pour des activités modérées.';
+          } else if (weatherDescription.includes('pluie') || weatherDescription.includes('averses')) {
+              weatherImage = '<img src="/images/rainy-sharp-svgrepo-com.svg" alt="Pluvieux">';
+              impactMessage = 'Risque d’inondations localisées, prudence sur les routes.';
+          } else if (weatherDescription.includes('orage')) {
+              weatherImage = '<img src="images/storm.png" alt="Orage">';
+              impactMessage = 'Attention aux impacts : risques d’éclairs et vents violents.';
+          } else if (weatherDescription.includes('neige')) {
+              weatherImage = '<img src="images/snow.png" alt="Neige">';
+              impactMessage = 'Prévisions de neige : risque de perturbations sur les routes et activités.';
+          } else if (weatherDescription.includes('vent') || weatherDescription.includes('rafales')) {
+              weatherImage = '<img src="images/windy.png" alt="Vent">';
+              impactMessage = 'Vent fort : attention aux objets légers et risques sur les structures fragiles.';
+          } else if (weatherDescription.includes('canicule')) {
+              weatherImage = '<img src="images/heatwave.png" alt="Canicule">';
+              impactMessage = 'Vigilance : chaleur extrême, hydratez-vous et évitez les efforts physiques.';
+          } else if (weatherDescription.includes('grand froid')) {
+              weatherImage = '<img src="images/frost.png" alt="Grand froid">';
+              impactMessage = 'Risque de gel : protégez-vous et limitez les déplacements inutiles.';
+          } else {
+              weatherImage = '<img src="images/default.png" alt="Météo inconnue">';
+              impactMessage = 'Données météo limitées. Consultez des sources locales pour plus de détails.';
+          }
+
+          // Ajout des informations météo avec l'image et le message d’impact correspondant
+          dayElement.innerHTML += `
+              <div class="weather-info">
+                  ${weatherImage}
+                  <span>${Math.round(weatherInfo.main.temp)}°C</span>
+              </div>`;
+      }
+
+
+                           // Add task count
+                           if (tasks[day]) {
+                             dayElement.innerHTML += `<div class="task-count">${tasks[day].length} tâches</div>`;
+                           }
+
+                           // Add click event to show tasks
+                           dayElement.addEventListener("click", () => {
+                             window.location.href = `/tasks/${date.getFullYear()}-${date.getMonth() + 1}-${day}`;
+                           });
+
+                           calendarGrid.appendChild(dayElement);
+                         }
+                       }
+
+                       // Event listeners for navigation
+                       prevMonthButton.addEventListener("click", () => {
+                         currentDate.setMonth(currentDate.getMonth() - 1);
+                         renderCalendar(currentDate);
+                       });
+
+                       nextMonthButton.addEventListener("click", () => {
+                         currentDate.setMonth(currentDate.getMonth() + 1);
+                         renderCalendar(currentDate);
+                       });
+
+                       renderCalendar(currentDate);
+                     });
+    </script>
+  </body>
+</html>

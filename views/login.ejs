@@ -1,0 +1,33 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>login</title>
+  <link rel="stylesheet" href="/css/loginandregister.css" />
+</head>
+<div id="Connexion">
+  <h1>Connexion</h1>
+  <form action="/auth/login" method="POST">
+    <input id="email" type="email" name="email" placeholder=" " required />
+    <label for="email">Email</label>
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder=" "
+      required
+    />
+    <label for="password">Mot de passe</label>
+    <br />
+    <button type="submit">Se connecter</button>
+  </form>
+  <a href="/auth/register">Créer un compte</a>
+</div>
+<script>
+  document.querySelectorAll("label").forEach((label) => {
+    const input = document.querySelector(`#${label.htmlFor}`);
+    if (input) {
+      input.placeholder = label.textContent.trim();
+      label.style.display = "none";
+    }
+  });
+</script>
